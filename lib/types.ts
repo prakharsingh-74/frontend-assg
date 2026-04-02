@@ -1,0 +1,37 @@
+export type UserRole = 'viewer' | 'admin'
+
+export interface Transaction {
+  id: string
+  date: Date
+  amount: number
+  category: 'Salary' | 'Groceries' | 'Transport' | 'Utilities' | 'Entertainment' | 'Healthcare' | 'Other'
+  type: 'income' | 'expense'
+  description: string
+  merchant?: string
+}
+
+export interface DashboardMetrics {
+  totalBalance: number
+  totalIncome: number
+  totalExpenses: number
+  balanceTrend: Array<{
+    date: string
+    balance: number
+  }>
+  categoryBreakdown: Array<{
+    category: string
+    amount: number
+    percentage: number
+  }>
+}
+
+export interface DashboardStore {
+  role: UserRole
+  setRole: (role: UserRole) => void
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+  selectedCategory: string | null
+  setSelectedCategory: (category: string | null) => void
+  dateRange: { from: Date; to: Date }
+  setDateRange: (from: Date, to: Date) => void
+}
