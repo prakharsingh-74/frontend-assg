@@ -1,4 +1,4 @@
-import { MoneyflowLandingPage } from '@/components/landing/moneyflow-landing'
+import { ZorvynLandingPage } from '@/components/landing/moneyflow-landing'
 
 export const metadata = {
   title: 'Moneyflow - Secure Banking with Precision',
@@ -7,5 +7,5 @@ export const metadata = {
 }
 
 export default function LandingPage() {
-  return <MoneyflowLandingPage />
+  return <ZorvynLandingPage />
 }

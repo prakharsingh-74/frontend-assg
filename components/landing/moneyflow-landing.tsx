@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { ShieldCheck, ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 
@@ -122,7 +121,7 @@ function Planet() {
   )
 }
 
-export function MoneyflowLandingPage() {
+export function ZorvynLandingPage() {
   return (
     <>
       <style>{`
@@ -142,19 +141,8 @@ export function MoneyflowLandingPage() {
       <div className="min-h-screen w-full bg-[#F3F5F7]">
       {/* Top nav */}
       <nav className="mx-auto flex w-full max-w-[1180px] items-center justify-between px-4 py-6 md:px-0">
-        <div className="flex items-center gap-3">
-          <div className="grid h-9 w-9 place-items-center rounded-lg bg-emerald-700 text-white shadow">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M4 12c5 0 4-8 10-8 0 3 6 3 6 8s-6 5-6 8c-6 0-5-8-10-8Z" fill="currentColor" />
-            </svg>
-          </div>
-          <span className="text-xl font-semibold tracking-tight text-slate-900">moneyflow</span>
+        <div className="flex items-center">
+          <img src="/zorvyn.jpg" alt="zorvyn" className="h-8 w-auto" />
         </div>
         <div className="hidden items-center gap-8 md:flex">
           {['Solutions', 'Product', 'Company', 'Insight'].map((item) => (
@@ -168,10 +156,10 @@ export function MoneyflowLandingPage() {
           ))}
         </div>
         <div className="hidden gap-2 md:flex">
-          <button className="rounded-full px-4 py-2 text-sm text-slate-700 hover:bg-white">
+          <Link href="/login" className="rounded-full px-4 py-2 text-sm text-slate-700 hover:bg-white">
             Login
-          </button>
-          <SoftButton>Sign Up</SoftButton>
+          </Link>
+          <SoftButton href="/signup">Sign Up</SoftButton>
         </div>
       </nav>
 
@@ -187,21 +175,14 @@ export function MoneyflowLandingPage() {
             </h1>
             <p className="mt-4 max-w-md text-slate-600">
               Join over a million people who choose{' '}
-              <span className="font-medium text-slate-900">moneyflow</span> for fast and secure
-              future banking.
+              <span className="font-medium text-slate-900">zorvyn</span> for managing their finances.
             </p>
           </div>
 
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-            <SoftButton href="/dashboard">
+            <SoftButton href="/login">
               Open Account <ArrowUpRight className="ml-1 inline h-4 w-4" />
             </SoftButton>
-            <Link
-              href="/dashboard"
-              className="text-sm font-medium text-emerald-700 hover:text-emerald-800 underline"
-            >
-              View Dashboard →
-            </Link>
           </div>
 
           <div className="grid grid-cols-2 gap-8 pt-2 md:max-w-sm">
@@ -276,7 +257,7 @@ export function MoneyflowLandingPage() {
                 className="absolute right-6 top-6 h-12 w-12 rounded-full bg-emerald-600/40"
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* Currencies card */}
           <div
@@ -294,7 +275,7 @@ export function MoneyflowLandingPage() {
               Hundreds of
               <br /> countries in one card
             </div>
-          </motion.div>
+          </div>
 
           {/* Growth card */}
           <div
@@ -311,14 +292,14 @@ export function MoneyflowLandingPage() {
             </div>
             <div className="mt-1 text-xs text-emerald-600">↑ 0.024%</div>
             <MiniBars />
-          </motion.div>
+          </div>
 
           <div className="hidden md:block" />
         </div>
       </div>
 
       <footer className="mx-auto w-full max-w-[1180px] px-4 pb-10 text-center text-xs text-slate-400 md:px-0">
-        © {new Date().getFullYear()} moneyflow, Inc. All rights reserved.
+        © {new Date().getFullYear()} zorvyn, Inc. All rights reserved.
       </footer>
       </div>
     </>

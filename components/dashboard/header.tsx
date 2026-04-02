@@ -1,9 +1,10 @@
 'use client'
 
+import Link from 'next/link'
 import { useDashboardStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Shield, Eye } from 'lucide-react'
+import { Eye, Shield } from 'lucide-react'
 
 export function DashboardHeader() {
   const { role, setRole } = useDashboardStore()
@@ -11,15 +12,9 @@ export function DashboardHeader() {
   return (
     <header className="border-b border-border bg-card sticky top-0 z-40">
       <div className="px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
-            <Shield className="w-6 h-6 text-accent-foreground" />
-          </div>
-          <div>
-            <h1 className="text-xl font-semibold text-foreground">Finance Dashboard</h1>
-            <p className="text-xs text-muted-foreground">Smart financial management</p>
-          </div>
-        </div>
+        <Link href="/" className="flex items-center transition-transform hover:scale-105">
+          <img src="/zorvyn.jpg" alt="zorvyn" className="h-9 w-auto" />
+        </Link>
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 bg-muted rounded-lg p-1">

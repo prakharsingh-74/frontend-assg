@@ -45,43 +45,6 @@ export default function DashboardPage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-border bg-card py-6 mt-12">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
-            <div>
-              <h4 className="font-semibold text-foreground mb-2">Features</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>Dashboard Analytics</li>
-                <li>Transaction Tracking</li>
-                <li>Spending Insights</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-foreground mb-2">Technology</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>Next.js 16</li>
-                <li>React 19</li>
-                <li>TypeScript</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-foreground mb-2">Design</h4>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>Modern Fintech Style</li>
-                <li>Dark Mode Support</li>
-                <li>Responsive Design</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-border pt-6">
-            <p className="text-sm text-muted-foreground">
-              © 2024 Finance Dashboard. Professional financial management interface with role-based access,
-              comprehensive analytics, and advanced data visualization. Built for modern fintech applications.
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
