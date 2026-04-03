@@ -10,9 +10,10 @@ import { TransactionsList } from '@/components/dashboard/transactions-list'
 import { InsightsSection } from '@/components/dashboard/insights-section'
 import { AdminPanel } from '@/components/dashboard/admin-panel'
 import { DateRangeFilter } from '@/components/dashboard/date-range-filter'
+import { ProfileSettings } from '@/components/dashboard/profile-settings'
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'transactions' | 'insights' | 'settings'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'transactions' | 'insights' | 'settings' | 'profile'>('overview')
 
   return (
     <DashboardLayout activeTab={activeTab} setActiveTab={setActiveTab}>
@@ -80,6 +81,17 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
+          </motion.div>
+        )}
+
+        {activeTab === 'profile' && (
+          <motion.div
+            key="profile"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+          >
+            <ProfileSettings />
           </motion.div>
         )}
       </AnimatePresence>

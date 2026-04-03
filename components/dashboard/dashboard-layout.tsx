@@ -65,16 +65,12 @@ export function DashboardLayout({ children, activeTab, setActiveTab }: Dashboard
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{role} Account</p>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator className="bg-slate-100" />
-                  <DropdownMenuItem className="rounded-xl px-3 py-2.5 gap-2 cursor-pointer transition-colors focus:bg-emerald-50 focus:text-emerald-950 font-bold text-slate-600">
-                    <User className="h-4 w-4 text-emerald-600/50" />
-                    Profile Settings
-                  </DropdownMenuItem>
                   <DropdownMenuItem 
-                    onClick={() => setActiveTab('settings')}
+                    onClick={() => setActiveTab('profile')}
                     className="rounded-xl px-3 py-2.5 gap-2 cursor-pointer transition-colors focus:bg-emerald-50 focus:text-emerald-950 font-bold text-slate-600"
                   >
-                    <SettingsIcon className="h-4 w-4 text-emerald-600/50" />
-                    Dashboard Config
+                    <User className="h-4 w-4 text-emerald-600/50" />
+                    Profile Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-slate-100" />
                   <DropdownMenuItem 
