@@ -5,6 +5,20 @@ A clean, interactive, and high-performance financial management interface built 
 ## 🚀 Objective
 This project was built to demonstrate an understanding of modern frontend development, focusing on intuitive UI design, robust state management, and interactive data visualization.
 
+## 🔐 Quick Start: Demo Access
+To access the protected dashboard and explore the **Admin** features, use the following hardcoded credentials on the [Login Page](http://localhost:3000/login):
+
+```yaml
+# Credentials for Zorvyn Finance Dashboard
+Email:    admin@zorvyn.com
+Password: admin123
+```
+
+> [!IMPORTANT]
+> The dashboard is protected by an **AuthGuard**. Direct access to `/dashboard` via the URL will redirect to login if no active session is found.
+
+---
+
 ## ✨ Key Features
 
 ### 1. Dashboard Overview

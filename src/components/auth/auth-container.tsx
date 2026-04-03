@@ -8,9 +8,10 @@ import { ShieldCheck } from 'lucide-react'
 interface AuthContainerProps {
   children: React.ReactNode
   isSignup?: boolean
+  footer?: React.ReactNode
 }
 
-export function AuthContainer({ children, isSignup = false }: AuthContainerProps) {
+export function AuthContainer({ children, isSignup = false, footer }: AuthContainerProps) {
   return (
     <div className="h-screen w-full overflow-hidden bg-white font-sans">
       <div 
@@ -26,7 +27,7 @@ export function AuthContainer({ children, isSignup = false }: AuthContainerProps
           <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
           <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-teal-500/10 blur-3xl" />
           
-          <Link href="/" className="relative z-10 flex items-center transition-transform hover:scale-105">
+          <Link href="/" className="relative z-10 flex items-center transition-transform hover:scale-105 shrink-0">
               <img src="/zorvyn.jpg" alt="zorvyn" className="h-10 w-auto" />
           </Link>
 
@@ -73,16 +74,27 @@ export function AuthContainer({ children, isSignup = false }: AuthContainerProps
           className="flex flex-1 flex-col justify-center px-6 py-8 md:px-12 lg:px-20 bg-[#F3F5F7]"
         >
            <AnimatePresence mode="wait">
-             <motion.div
-               key={isSignup ? 'signup-form-container' : 'login-form-container'}
-               initial={{ opacity: 0, x: isSignup ? -20 : 20 }}
-               animate={{ opacity: 1, x: 0 }}
-               exit={{ opacity: 0, x: isSignup ? 20 : -20 }}
-               transition={{ duration: 0.4 }}
-               className="mx-auto w-full max-w-md bg-white p-8 md:p-10 rounded-3xl shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50"
-             >
-               {children}
-             </motion.div>
+             <div className="mx-auto w-full max-w-md space-y-6">
+               <motion.div
+                 key={isSignup ? 'signup-form-container' : 'login-form-container'}
+                 initial={{ opacity: 0, x: isSignup ? -20 : 20 }}
+                 animate={{ opacity: 1, x: 0 }}
+                 exit={{ opacity: 0, x: isSignup ? 20 : -20 }}
+                 transition={{ duration: 0.4 }}
+                 className="bg-white p-8 md:p-10 rounded-3xl shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50"
+               >
+                 {children}
+               </motion.div>
+               {footer && (
+                 <motion.div
+                   initial={{ opacity: 0, y: 10 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   transition={{ delay: 0.5 }}
+                 >
+                   {footer}
+                 </motion.div>
+               )}
+             </div>
            </AnimatePresence>
         </motion.div>
       </div>

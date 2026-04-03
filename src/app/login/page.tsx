@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Mail, Lock, Loader2 } from 'lucide-react'
+import { ArrowLeft, Mail, Lock, Loader2, Info } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { AuthContainer } from '@/components/auth/auth-container'
 import { useDashboardStore } from '@/lib/store'
@@ -60,8 +60,34 @@ export default function LoginPage() {
     visible: { opacity: 1, y: 0 },
   }
 
+  const demoBox = (
+    <div 
+      className="rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100/50 dark:border-emerald-500/10 p-4 relative overflow-hidden group shadow-sm"
+    >
+      <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500/50 group-hover:bg-emerald-500 transition-colors" />
+      <div className="flex gap-3 items-start">
+        <div className="h-8 w-8 rounded-xl bg-white dark:bg-emerald-900/40 flex items-center justify-center shrink-0 border border-emerald-100 dark:border-emerald-500/20 shadow-sm">
+          <Info className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+        </div>
+        <div className="space-y-1">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400">Demo Access</p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-1 text-sm">
+             <div className="flex items-center gap-1.5">
+               <span className="text-slate-400 font-medium">User:</span>
+               <code className="bg-white dark:bg-emerald-950/40 px-1.5 py-0.5 rounded border border-slate-100 dark:border-emerald-500/10 text-emerald-900 dark:text-emerald-300 font-bold select-all">admin@zorvyn.com</code>
+             </div>
+             <div className="flex items-center gap-1.5">
+               <span className="text-slate-400 font-medium">Pass:</span>
+               <code className="bg-white dark:bg-emerald-950/40 px-1.5 py-0.5 rounded border border-slate-100 dark:border-emerald-500/10 text-emerald-900 dark:text-emerald-300 font-bold select-all">admin123</code>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
   return (
-    <AuthContainer isSignup={false}>
+    <AuthContainer isSignup={false} footer={demoBox}>
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -106,7 +132,7 @@ export default function LoginPage() {
                   <input
                     id="email"
                     placeholder="e.g. admin@zorvyn.com"
-                    className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-11 py-2 text-sm ring-offset-white transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
+                    className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-11 py-2 text-sm text-slate-950 ring-offset-white transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -128,7 +154,7 @@ export default function LoginPage() {
                   <input
                     id="password"
                     placeholder="••••••••"
-                    className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-11 py-2 text-sm ring-offset-white transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
+                    className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-11 py-2 text-sm text-slate-950 ring-offset-white transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
