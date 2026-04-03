@@ -45,7 +45,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="fixed left-0 top-0 z-50 h-screen bg-emerald-950 text-white shadow-2xl overflow-hidden"
+      className="fixed left-0 top-0 z-50 h-screen bg-emerald-950 dark:bg-black text-white shadow-2xl overflow-hidden"
     >
       <div className={cn("flex h-full w-full flex-col transition-all duration-300", isExpanded ? "p-4 md:p-6 items-start" : "p-0 py-8 items-center")}>
         {/* Logo */}
@@ -79,12 +79,12 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                   "group relative flex h-12 items-center font-bold transition-all rounded-xl",
                   isExpanded ? "w-full gap-4 px-4 justify-start" : "w-12 justify-center px-0",
                   isActive 
-                    ? "bg-emerald-600 text-white shadow-lg shadow-emerald-900/40" 
-                    : "text-emerald-300/60 hover:bg-emerald-900/50 hover:text-emerald-100"
+                    ? "bg-emerald-600 dark:bg-[#60fcc7]/10 text-white dark:text-[#60fcc7] shadow-lg shadow-emerald-900/40" 
+                    : "text-emerald-300/60 hover:bg-emerald-900/50 dark:hover:bg-[#182028] hover:text-emerald-100"
                 )}
               >
                 <div className={cn("flex h-6 w-6 items-center justify-center shrink-0 transition-all")}>
-                  <item.icon className={cn("h-5 w-5 transition-transform group-hover:scale-110", isActive ? "text-white" : "text-emerald-300/40 group-hover:text-emerald-100")} />
+                  <item.icon className={cn("h-5 w-5 transition-transform group-hover:scale-110", isActive ? "text-white dark:text-[#60fcc7]" : "text-emerald-300/40 group-hover:text-emerald-100")} />
                 </div>
                 
                 <AnimatePresence>
@@ -112,7 +112,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
         </nav>
 
         {/* Bottom Section: Theme Toggle + Role Switcher */}
-        <div className={cn("mt-auto space-y-4 pt-6 border-t border-emerald-900/50 overflow-hidden", isExpanded ? "w-full" : "w-12")}>
+          <div className={cn("mt-auto space-y-3 pt-6 border-t border-emerald-900/50 dark:border-[#182028] overflow-hidden", isExpanded ? "w-full" : "w-12")}>
           {/* Dark mode toggle */}
           <button
             onClick={() => setTheme(isDark ? 'light' : 'dark')}
@@ -147,7 +147,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                 className={cn(
                   "flex items-center rounded-xl py-2 text-[11px] font-bold transition-all",
                   isExpanded ? "justify-between px-2.5" : "justify-center px-0 w-12",
-                  role === 'viewer' ? "bg-white text-emerald-950 shadow-sm" : "text-emerald-300/50 hover:text-emerald-100 hover:bg-emerald-900/40"
+                  role === 'viewer' ? "bg-white dark:bg-[#60fcc7]/10 dark:text-[#60fcc7] text-emerald-950 shadow-sm" : "text-emerald-300/50 hover:text-emerald-100 hover:bg-emerald-900/40 dark:hover:bg-[#182028]"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -163,7 +163,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                 className={cn(
                   "flex items-center rounded-xl py-2 text-[11px] font-bold transition-all",
                   isExpanded ? "justify-between px-2.5" : "justify-center px-0 w-12",
-                  role === 'user' ? "bg-white text-emerald-950 shadow-sm" : "text-emerald-300/50 hover:text-emerald-100 hover:bg-emerald-900/40"
+                  role === 'user' ? "bg-white dark:bg-[#60fcc7]/10 dark:text-[#60fcc7] text-emerald-950 shadow-sm" : "text-emerald-300/50 hover:text-emerald-100 hover:bg-emerald-900/40 dark:hover:bg-[#182028]"
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -179,7 +179,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                 className={cn(
                   "flex items-center rounded-xl py-2 text-[11px] font-bold transition-all",
                   isExpanded ? "justify-between px-2.5" : "justify-center px-0 w-12",
-                  role === 'admin' ? "bg-white text-emerald-950 shadow-sm" : "text-emerald-300/50 hover:text-emerald-100 hover:bg-emerald-900/40"
+                  role === 'admin' ? "bg-white dark:bg-[#60fcc7]/10 dark:text-[#60fcc7] text-emerald-950 shadow-sm" : "text-emerald-300/50 hover:text-emerald-100 hover:bg-emerald-900/40 dark:hover:bg-[#182028]"
                 )}
               >
                 <div className="flex items-center gap-3">

@@ -25,7 +25,7 @@ export function DashboardLayout({ children, activeTab, setActiveTab }: Dashboard
   const { role } = useDashboardStore()
 
   return (
-    <div className="flex min-h-screen bg-[#F3F5F7] dark:bg-slate-900 transition-colors duration-300">
+    <div className="flex min-h-screen bg-[#F3F5F7] dark:bg-[#090f15] transition-colors duration-300">
       {/* Sidebar Navigation */}
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -38,8 +38,8 @@ export function DashboardLayout({ children, activeTab, setActiveTab }: Dashboard
               animate={{ opacity: 1, x: 0 }}
               key={activeTab}
             >
-              <h1 className="text-4xl font-black tracking-tight text-emerald-950 dark:text-slate-100 capitalize">{activeTab}</h1>
-              <p className="mt-1 text-sm font-bold text-slate-400">
+              <h1 className="font-display text-4xl font-extrabold tracking-tight text-emerald-950 dark:text-[#e6ebf4] capitalize">{activeTab}</h1>
+              <p className="mt-1 text-sm font-medium text-slate-400 dark:text-[#a6abb4]">
                 {activeTab === 'overview' && 'Your financial health at a glance'}
                 {activeTab === 'transactions' && 'Manage your spending history'}
                 {activeTab === 'insights' && 'Deep dive into your financial patterns'}
@@ -50,7 +50,7 @@ export function DashboardLayout({ children, activeTab, setActiveTab }: Dashboard
             <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-slate-800 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 transition-all hover:ring-emerald-300 hover:shadow-md active:scale-95 group overflow-hidden">
+                  <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-[#182028] shadow-sm ring-1 ring-slate-200 dark:ring-0 dark:[outline:1px_solid_rgba(66,72,80,0.20)] transition-all hover:ring-emerald-300 dark:hover:bg-[#242d37] hover:shadow-md active:scale-95 group overflow-hidden">
                     <Avatar className="h-full w-full rounded-none">
                       <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${role}`} />
                       <AvatarFallback className="bg-white font-black text-emerald-600">
@@ -59,7 +59,7 @@ export function DashboardLayout({ children, activeTab, setActiveTab }: Dashboard
                     </Avatar>
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 shadow-2xl border-slate-200/50 dark:border-slate-700 dark:bg-slate-800">
+                <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 shadow-[0px_24px_48px_rgba(0,0,0,0.50)] border-slate-200/50 dark:border-0 dark:[outline:1px_solid_rgba(66,72,80,0.20)] dark:bg-[rgba(24,32,40,0.90)] dark:backdrop-blur-[24px]">
                   <DropdownMenuLabel className="px-3 py-2">
                     <p className="text-sm font-black text-emerald-950">Zorvyn User</p>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{role} Account</p>

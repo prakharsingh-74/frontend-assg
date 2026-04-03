@@ -47,25 +47,21 @@ export function DateRangeFilter() {
 
   if (!isMounted) {
     return (
-      <div className="rounded-3xl bg-white p-6 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50">
-        <div className="flex items-center gap-2 mb-4">
-          <Calendar className="w-4 h-4 text-slate-400" />
-          <h3 className="font-bold text-slate-900">Quick Filters</h3>
-        </div>
-        <div className="h-10 bg-slate-50 rounded-xl animate-pulse" />
+      <div className="rounded-2xl bg-white dark:bg-[#0d141b] p-6 dark:shadow-none shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50 dark:ring-0 dark:[outline:1px_solid_rgba(66,72,80,0.15)]">
+        <div className="h-10 bg-slate-50 dark:bg-[#182028] rounded-xl animate-pulse" />
       </div>
     )
   }
 
   return (
-    <div className="rounded-3xl bg-white p-8 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50">
+    <div className="rounded-2xl bg-white dark:bg-[#0d141b] p-8 shadow-xl shadow-slate-200/50 dark:shadow-none ring-1 ring-slate-200/50 dark:ring-0 dark:[outline:1px_solid_rgba(66,72,80,0.15)]">
       <div className="flex items-center gap-2 mb-6">
-        <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+        <div className="p-2 rounded-xl bg-emerald-50 dark:bg-[#60fcc7]/10 text-emerald-600 dark:text-[#60fcc7] ring-1 ring-emerald-100 dark:ring-0">
             <Calendar className="w-4 h-4" />
         </div>
         <div>
-            <h3 className="text-xl font-bold text-slate-900">Time Machine</h3>
-            <p className="text-xs font-medium text-slate-400">Jump to a specific data point</p>
+            <h3 className="font-display text-xl font-bold text-slate-900 dark:text-[#e6ebf4]">Time Machine</h3>
+            <p className="text-xs font-medium text-slate-400 dark:text-[#a6abb4]">Jump to a specific data point</p>
         </div>
       </div>
 
@@ -86,8 +82,8 @@ export function DateRangeFilter() {
             className={cn(
               "rounded-xl px-5 py-2.5 text-xs font-bold transition-all tabular-nums ring-1",
               btn.active 
-                ? "bg-emerald-900 text-white shadow-lg shadow-emerald-900/20 ring-emerald-900" 
-                : "bg-slate-50 text-slate-600 ring-slate-200 hover:bg-white hover:ring-emerald-300"
+                ? "bg-emerald-900 dark:bg-[#60fcc7]/15 text-white dark:text-[#60fcc7] shadow-lg shadow-emerald-900/20 dark:shadow-none ring-emerald-900 dark:ring-[#60fcc7]/20 ring-1" 
+                : "bg-slate-50 dark:bg-[#182028] text-slate-600 dark:text-[#a6abb4] ring-1 ring-slate-200 dark:ring-[rgba(66,72,80,0.20)] hover:bg-white dark:hover:bg-[#242d37] hover:ring-emerald-300 dark:hover:text-[#e6ebf4]"
             )}
           >
             {btn.label}
@@ -96,9 +92,9 @@ export function DateRangeFilter() {
       </div>
 
       {dateRange.from && typeof dateRange.from === 'object' && 'toLocaleDateString' in dateRange.from && (
-        <div className="mt-6 pt-6 border-t border-slate-100">
-          <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 uppercase tracking-wider">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+        <div className="mt-6 pt-6 border-t border-slate-100 dark:border-[rgba(66,72,80,0.15)]">
+          <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-[#60fcc7] uppercase tracking-wider">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-[#60fcc7] animate-pulse" />
             Active Range: {dateRange.from.toLocaleDateString()} — {dateRange.to.toLocaleDateString()}
           </div>
         </div>

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -60,57 +61,72 @@
 }
 
 .dark {
-  /* Dark theme - Professional dark fintech */
-  --background: oklch(0.12 0.01 250);
-  --foreground: oklch(0.95 0.001 210);
-  --card: oklch(0.16 0.01 250);
-  --card-foreground: oklch(0.95 0.001 210);
-  --popover: oklch(0.16 0.01 250);
-  --popover-foreground: oklch(0.95 0.001 210);
-  
-  /* Primary */
-  --primary: oklch(0.75 0.12 250);
-  --primary-foreground: oklch(0.12 0.01 250);
-  
+  /* ── Editorial Financial Intelligence: Sovereign Analyst ── */
+
+  /* Surface hierarchy — depth through tonal layering, no borders */
+  --background:          #090f15;   /* surface: the vast canvas */
+  --surface-low:         #0d141b;   /* surface-container-low: large structural sections */
+  --surface-high:        #182028;   /* surface-container-high: data widgets & cards */
+  --surface-bright:      #242d37;   /* surface-bright: hover lifts & tertiary floats */
+  --surface-darkest:     #000000;   /* surface-container-lowest: sidebar & recessed elements */
+
+  /* Card / popover surfaces */
+  --card:                #182028;
+  --card-foreground:     #e6ebf4;
+  --popover:             rgba(24, 32, 40, 0.70); /* Glassmorphism: 70% opacity */
+  --popover-foreground:  #e6ebf4;
+
+  /* Text — Never pure white */
+  --foreground:          #e6ebf4;   /* on-surface */
+  --muted-foreground:    #a6abb4;   /* on-surface-variant: labels, placeholders */
+
+  /* Primary — #60fcc7 is the laser pointer: one action per screen */
+  --primary:             #60fcc7;
+  --primary-container:   #19ce9c;
+  --on-primary:          #003d2c;   /* on-primary-container: text on primary buttons */
+  --primary-foreground:  #003d2c;
+
   /* Secondary */
-  --secondary: oklch(0.25 0.01 210);
-  --secondary-foreground: oklch(0.95 0.001 210);
-  
+  --secondary:           #182028;
+  --secondary-foreground:#e6ebf4;
+
   /* Muted */
-  --muted: oklch(0.25 0.01 210);
-  --muted-foreground: oklch(0.65 0.01 210);
-  
+  --muted:               #0d141b;
+
   /* Accent */
-  --accent: oklch(0.65 0.18 250);
-  --accent-foreground: oklch(0.12 0.01 250);
-  
-  /* Semantic */
-  --destructive: oklch(0.58 0.2 25);
-  --destructive-foreground: oklch(0.92 0.05 25);
-  --success: oklch(0.7 0.15 140);
-  
-  /* Borders & inputs */
-  --border: oklch(0.25 0.01 210);
-  --input: oklch(0.22 0.01 210);
-  --ring: oklch(0.65 0.18 250);
-  
-  /* Charts */
-  --chart-1: oklch(0.65 0.18 250);
-  --chart-2: oklch(0.7 0.15 140);
-  --chart-3: oklch(0.58 0.2 25);
-  --chart-4: oklch(0.68 0.14 190);
-  --chart-5: oklch(0.65 0.15 30);
-  
-  /* Sidebar */
-  --sidebar: oklch(0.16 0.01 250);
-  --sidebar-foreground: oklch(0.95 0.001 210);
-  --sidebar-primary: oklch(0.65 0.18 250);
-  --sidebar-primary-foreground: oklch(0.12 0.01 250);
-  --sidebar-accent: oklch(0.25 0.01 210);
-  --sidebar-accent-foreground: oklch(0.95 0.001 210);
-  --sidebar-border: oklch(0.25 0.01 210);
-  --sidebar-ring: oklch(0.65 0.18 250);
+  --accent:              #182028;
+  --accent-foreground:   #60fcc7;
+
+  /* Semantic: Error */
+  --destructive:         #9f0519;   /* error_container */
+  --destructive-foreground: #ffa8a3; /* on_error_container */
+
+  /* Ghost Border: outline-variant at 15% opacity */
+  --border:              rgba(66, 72, 80, 0.15); /* #424850 @ 15% */
+  --input:               #182028;   /* surface-container-high for inputs, no border */
+  --ring:                rgba(96, 252, 199, 0.40); /* primary @ 40% for focus ghost border */
+
+  /* Charts — primary-anchored palette */
+  --chart-1:             #60fcc7;   /* primary */
+  --chart-2:             #19ce9c;   /* primary-container */
+  --chart-3:             #ffa8a3;   /* error accent */
+  --chart-4:             #7dd3fc;   /* sky accent */
+  --chart-5:             #c4b5fd;   /* violet accent */
+
+  /* Sidebar — darkest surface to create sidebar/canvas contrast */
+  --sidebar:             #000000;
+  --sidebar-foreground:  #e6ebf4;
+  --sidebar-primary:     #60fcc7;
+  --sidebar-primary-foreground: #003d2c;
+  --sidebar-accent:      #182028;
+  --sidebar-accent-foreground: #60fcc7;
+  --sidebar-border:      transparent;
+  --sidebar-ring:        rgba(96, 252, 199, 0.40);
+
+  /* Signature gradient: 135° primary → primary-container */
+  --gradient-cta: linear-gradient(135deg, #60fcc7 0%, #19ce9c 100%);
 }
+
 
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback';
@@ -161,3 +177,53 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ──── Editorial Financial Intelligence — Dark Mode Utilities ──── */
+
+.dark .editorial-card {
+  background-color: #182028; /* surface-container-high */
+  /* Ghost border fallback — no 1px solid borders */
+  outline: 1px solid rgba(66, 72, 80, 0.15);
+  border-radius: 1rem;
+}
+
+.dark .editorial-card-low {
+  background-color: #0d141b; /* surface-container-low */
+  border-radius: 1rem;
+}
+
+/* Signature CTA: 135° gradient texture */
+.dark .cta-gradient {
+  background: linear-gradient(135deg, #60fcc7 0%, #19ce9c 100%);
+  color: #003d2c;
+}
+.dark .cta-gradient:hover {
+  background: linear-gradient(135deg, #7ffdd0 0%, #2ad9aa 100%);
+}
+
+/* Glassmorphism: 70% opacity + 24px blur */
+.dark .glass-overlay {
+  background-color: rgba(24, 32, 40, 0.70);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Editorial ledger labels — 5% letter-spacing uppercase */
+.label-ledger {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Zero-divider zebra stripe for transaction rows */
+.dark .surface-zebra:nth-child(even) {
+  background-color: #0d141b; /* surface-container-low */
+}
+
+/* Manrope display class */
+.font-display {
+  font-family: 'Manrope', sans-serif;
+}
+

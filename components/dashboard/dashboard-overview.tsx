@@ -91,7 +91,8 @@ export function DashboardOverview() {
         trend={totalBalance > 0 ? 'up' : 'down'}
         change={incomeThisMonth - expensesThisMonth}
         subtext={`${incomeThisMonth > 0 ? '+' : ''}${((incomeThisMonth - expensesThisMonth) / totalBalance * 100).toFixed(1)}% this month`}
-        className="md:col-span-1 bg-emerald-950 text-white shadow-emerald-900/20 ring-emerald-900/50"
+        hero
+        className="md:col-span-1 bg-emerald-950 text-white shadow-emerald-900/20 ring-emerald-900/50 dark:bg-[#0d141b] dark:ring-0 dark:[outline:1px_solid_rgba(66,72,80,0.20)]"
       />
       <SummaryCard
         title="Total Income"
