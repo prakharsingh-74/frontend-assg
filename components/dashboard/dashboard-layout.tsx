@@ -30,7 +30,7 @@ export function DashboardLayout({ children, activeTab, setActiveTab }: Dashboard
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Main Content Area */}
-      <main className="ml-64 flex-1 transition-all">
+      <main className="ml-20 flex-1 transition-all">
         <div className="mx-auto max-w-7xl p-8">
           <header className="mb-10 flex items-center justify-between">
             <motion.div
