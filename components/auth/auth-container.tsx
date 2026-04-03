@@ -12,9 +12,9 @@ interface AuthContainerProps {
 
 export function AuthContainer({ children, isSignup = false }: AuthContainerProps) {
   return (
-    <div className="min-h-screen w-full overflow-hidden bg-white font-sans">
+    <div className="h-screen w-full overflow-hidden bg-white font-sans">
       <div 
-        className={`flex min-h-screen w-full transition-all duration-700 ease-in-out ${isSignup ? 'flex-col md:flex-row-reverse' : 'flex-col md:flex-row'}`}
+        className={`flex h-full w-full transition-all duration-700 ease-in-out ${isSignup ? 'flex-col md:flex-row-reverse' : 'flex-col md:flex-row'}`}
       >
         {/* Branding Side */}
         <motion.div 
@@ -70,7 +70,7 @@ export function AuthContainer({ children, isSignup = false }: AuthContainerProps
         <motion.div 
           layoutId="form-area"
           transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-          className="flex flex-1 flex-col justify-center px-6 py-12 md:px-12 lg:px-20 bg-[#F3F5F7]"
+          className="flex flex-1 flex-col justify-center px-6 py-8 md:px-12 lg:px-20 bg-[#F3F5F7]"
         >
            <AnimatePresence mode="wait">
              <motion.div
