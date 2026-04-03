@@ -82,7 +82,7 @@ export function DashboardOverview() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <SummaryCard
         title="Total Balance"
         value={totalBalance}
@@ -90,6 +90,7 @@ export function DashboardOverview() {
         trend={totalBalance > 0 ? 'up' : 'down'}
         change={incomeThisMonth - expensesThisMonth}
         subtext={`${incomeThisMonth > 0 ? '+' : ''}${((incomeThisMonth - expensesThisMonth) / totalBalance * 100).toFixed(1)}% this month`}
+        className="md:col-span-1 bg-emerald-950 text-white shadow-emerald-900/20 ring-emerald-900/50"
       />
       <SummaryCard
         title="Total Income"

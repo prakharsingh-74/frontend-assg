@@ -43,11 +43,16 @@ export const useDashboardStore = create<DashboardStore>()(
         role: state.role,
         selectedCategory: state.selectedCategory,
         dateRange: {
-          from: state.dateRange.from.toISOString(),
-          to: state.dateRange.to.toISOString(),
+          from: state.dateRange.from instanceof Date ? state.dateRange.from.toISOString() : state.dateRange.from,
+          to: state.dateRange.to instanceof Date ? state.dateRange.to.toISOString() : state.dateRange.to,
         },
       }),
-      onRehydrate: (state) => convertDatesToDateObjects(state),
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          const converted = convertDatesToDateObjects(state);
+          state.dateRange = converted.dateRange;
+        }
+      },
     }
   )
 )

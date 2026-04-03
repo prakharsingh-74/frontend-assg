@@ -1,19 +1,19 @@
 'use client'
 
-import { Card } from '@/components/ui/card'
 import { mockTransactions, formatCurrency } from '@/lib/data'
-import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { useMemo, useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { motion, AnimatePresence } from 'framer-motion'
+import { cn } from '@/lib/utils'
 
 const COLORS = [
-  'var(--chart-1)',
-  'var(--chart-2)',
-  'var(--chart-3)',
-  'var(--chart-4)',
-  'var(--chart-5)',
-  '#6366F1',
-  '#EC4899',
+  '#064e3b', // Emerald 900
+  '#065f46', // Emerald 800
+  '#047857', // Emerald 700
+  '#059669', // Emerald 600
+  '#10b981', // Emerald 500
+  '#34d399', // Emerald 400
+  '#6ee7b7', // Emerald 300
 ]
 
 export function SpendingBreakdown() {
@@ -39,105 +39,119 @@ export function SpendingBreakdown() {
   const total = data.reduce((sum, item) => sum + item.amount, 0)
 
   return (
-    <Card className="p-6">
-      <div className="mb-6 flex items-center justify-between">
+    <motion.div 
+      whileHover={{ y: -4 }}
+      className="rounded-3xl bg-white p-8 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50 h-full flex flex-col"
+    >
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">Spending by Category</h2>
-          <p className="text-sm text-muted-foreground mt-1">Total: {formatCurrency(total)}</p>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Spending Breakdown</h2>
+          <p className="text-sm font-medium text-slate-500">Total: <span className="text-emerald-600">{formatCurrency(total)}</span></p>
         </div>
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant={chartType === 'pie' ? 'default' : 'outline'}
+        <div className="flex gap-1 rounded-xl bg-slate-100 p-1 ring-1 ring-slate-200">
+          <button
             onClick={() => setChartType('pie')}
-            className="text-xs"
+            className={cn(
+              "rounded-lg px-3 py-1.5 text-xs font-bold transition-all",
+              chartType === 'pie' ? "bg-white text-emerald-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
+            )}
           >
             Pie
-          </Button>
-          <Button
-            size="sm"
-            variant={chartType === 'bar' ? 'default' : 'outline'}
+          </button>
+          <button
             onClick={() => setChartType('bar')}
-            className="text-xs"
+            className={cn(
+              "rounded-lg px-3 py-1.5 text-xs font-bold transition-all",
+              chartType === 'bar' ? "bg-white text-emerald-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
+            )}
           >
             Bar
-          </Button>
+          </button>
         </div>
       </div>
 
-      <div className="w-full h-80">
+      <div className="h-64 w-full relative">
         <ResponsiveContainer width="100%" height="100%">
           {chartType === 'pie' ? (
-            <PieChart>
+            <PieChart key="pie">
               <Pie
                 data={data}
                 cx="50%"
                 cy="50%"
-                labelLine={false}
-                label={({ category, percent }) => `${category} ${(percent * 100).toFixed(0)}%`}
+                innerRadius={60}
                 outerRadius={80}
-                fill="#8884d8"
+                paddingAngle={5}
                 dataKey="amount"
                 isAnimationActive={true}
-                animationDuration={500}
+                animationDuration={1000}
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value) => formatCurrency(value as number)}
                 contentStyle={{
-                  backgroundColor: 'var(--card)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '6px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid #f1f5f9',
+                  borderRadius: '16px',
+                  boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
                 }}
+                itemStyle={{ fontSize: '12px', fontWeight: '700' }}
+                formatter={(value) => formatCurrency(value as number)}
               />
             </PieChart>
           ) : (
-            <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 60 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+            <BarChart key="bar" data={data} margin={{ top: 10, right: 10, left: 0, bottom: 20 }}>
+              <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#f1f5f9" />
               <XAxis
                 dataKey="category"
-                stroke="var(--muted-foreground)"
-                angle={-45}
-                textAnchor="end"
-                height={80}
-                style={{ fontSize: '12px' }}
-                tick={{ fill: 'var(--muted-foreground)' }}
+                axisLine={false}
+                tickLine={false}
+                style={{ fontSize: '10px', fontWeight: '600', fill: '#94a3b8' }}
+                dy={10}
               />
               <YAxis
-                stroke="var(--muted-foreground)"
-                style={{ fontSize: '12px' }}
-                tick={{ fill: 'var(--muted-foreground)' }}
+                axisLine={false}
+                tickLine={false}
+                style={{ fontSize: '10px', fontWeight: '600', fill: '#94a3b8' }}
                 tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
               />
               <Tooltip
-                formatter={(value) => formatCurrency(value as number)}
+                cursor={{ fill: '#f8fafc' }}
                 contentStyle={{
-                  backgroundColor: 'var(--card)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '6px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  backdropFilter: 'blur(12px)',
+                  border: '1px solid #f1f5f9',
+                  borderRadius: '16px',
                 }}
+                formatter={(value) => formatCurrency(value as number)}
               />
-              <Bar dataKey="amount" fill="var(--accent)" isAnimationActive={true} animationDuration={500} />
+              <Bar 
+                dataKey="amount" 
+                fill="#10b981" 
+                radius={[6, 6, 0, 0]} 
+                isAnimationActive={true} 
+              />
             </BarChart>
           )}
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-4">
-        {data.map((item, index) => (
-          <div key={item.category} className="p-3 rounded-lg bg-muted">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
-              <p className="text-xs font-medium text-foreground">{item.category}</p>
+      <div className="mt-8 grid grid-cols-2 gap-4">
+        {data.slice(0, 4).map((item, index) => (
+          <div key={item.category} className="rounded-2xl bg-slate-50 p-4 ring-1 ring-slate-100 transition-all hover:bg-white hover:ring-emerald-100 group">
+            <div className="mb-2 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-emerald-700">{item.category}</span>
+              </div>
+              <span className="text-[10px] font-bold text-emerald-600">{((item.amount / total) * 100).toFixed(0)}%</span>
             </div>
-            <p className="text-sm font-semibold text-foreground">{formatCurrency(item.amount)}</p>
-            <p className="text-xs text-muted-foreground">{((item.amount / total) * 100).toFixed(1)}%</p>
+            <p className="text-sm font-bold text-slate-900 tabular-nums">{formatCurrency(item.amount)}</p>
           </div>
         ))}
       </div>
-    </Card>
+    </motion.div>
   )
 }

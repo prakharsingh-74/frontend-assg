@@ -17,28 +17,28 @@ export function DashboardHeader() {
         </Link>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 bg-muted rounded-lg p-1">
+          <div className="flex items-center gap-1 bg-slate-100/50 p-1 rounded-full border border-slate-200/50">
             <Button
-              variant={role === 'viewer' ? 'default' : 'ghost'}
+              variant={role === 'viewer' ? 'secondary' : 'ghost'}
               size="sm"
               onClick={() => setRole('viewer')}
-              className={`gap-1.5 ${role === 'viewer' ? '' : 'text-muted-foreground'}`}
+              className={`rounded-full gap-2 ${role === 'viewer' ? 'bg-white shadow-sm' : 'text-slate-500'}`}
             >
               <Eye className="w-4 h-4" />
               <span className="hidden sm:inline">Viewer</span>
             </Button>
             <Button
-              variant={role === 'admin' ? 'default' : 'ghost'}
+              variant={role === 'admin' ? 'secondary' : 'ghost'}
               size="sm"
               onClick={() => setRole('admin')}
-              className={`gap-1.5 ${role === 'admin' ? '' : 'text-muted-foreground'}`}
+              className={`rounded-full gap-2 ${role === 'admin' ? 'bg-white shadow-sm' : 'text-slate-500'}`}
             >
               <Shield className="w-4 h-4" />
               <span className="hidden sm:inline">Admin</span>
             </Button>
           </div>
 
-          <Badge variant="secondary" className="text-xs">
+          <Badge variant="outline" className="rounded-full bg-white/50 backdrop-blur-sm">
             {role === 'admin' ? '👤 Admin Mode' : '👁️ Viewer Mode'}
           </Badge>
         </div>

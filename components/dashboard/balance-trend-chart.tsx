@@ -1,9 +1,9 @@
 'use client'
 
-import { Card } from '@/components/ui/card'
 import { mockTransactions, formatCurrency, formatDateShort } from '@/lib/data'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { useMemo } from 'react'
+import { motion } from 'framer-motion'
 
 export function BalanceTrendChart() {
   const data = useMemo(() => {
@@ -36,56 +36,63 @@ export function BalanceTrendChart() {
   }, [])
 
   return (
-    <Card className="p-6">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-foreground">Balance Trend</h2>
-        <p className="text-sm text-muted-foreground mt-1">Last 30 days</p>
+    <motion.div 
+      whileHover={{ y: -4 }}
+      className="rounded-3xl bg-white p-8 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50"
+    >
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Balance Trend</h2>
+        <p className="text-sm font-medium text-slate-500">Asset growth over the last 30 days</p>
       </div>
 
-      <div className="w-full h-64 -mx-6 px-6">
+      <div className="h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+          <AreaChart data={data}>
             <defs>
               <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--accent)" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="var(--accent)" stopOpacity={0} />
+                <stop offset="5%" stopColor="#10b981" stopOpacity={0.15} />
+                <stop offset="95%" stopColor="#10b981" stopOpacity={0.01} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+            <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#f1f5f9" />
             <XAxis
               dataKey="dateStr"
-              stroke="var(--muted-foreground)"
-              style={{ fontSize: '12px' }}
-              tick={{ fill: 'var(--muted-foreground)' }}
+              axisLine={false}
+              tickLine={false}
+              style={{ fontSize: '10px', fontWeight: '600', fill: '#94a3b8' }}
+              dy={10}
             />
             <YAxis
-              stroke="var(--muted-foreground)"
-              style={{ fontSize: '12px' }}
-              tick={{ fill: 'var(--muted-foreground)' }}
+              axisLine={false}
+              tickLine={false}
+              style={{ fontSize: '10px', fontWeight: '600', fill: '#94a3b8' }}
               tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'var(--card)',
-                border: '1px solid var(--border)',
-                borderRadius: '6px',
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid #f1f5f9',
+                borderRadius: '16px',
+                boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
+                padding: '12px',
               }}
-              labelStyle={{ color: 'var(--foreground)' }}
-              formatter={(value) => [formatCurrency(value as number), 'Balance']}
-              cursor={{ stroke: 'var(--accent)', strokeWidth: 1 }}
+              itemStyle={{ fontSize: '12px', fontWeight: '700', color: '#064e3b' }}
+              labelStyle={{ fontSize: '10px', fontWeight: '600', color: '#64748b', marginBottom: '4px' }}
+              formatter={(value) => [formatCurrency(value as number), 'Total Balance']}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="balance"
-              stroke="var(--accent)"
-              strokeWidth={2}
-              dot={false}
-              isAnimationActive={true}
-              animationDuration={500}
+              stroke="#059669"
+              strokeWidth={3}
+              fillOpacity={1}
+              fill="url(#colorBalance)"
+              animationDuration={1500}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
-    </Card>
+    </motion.div>
   )
 }

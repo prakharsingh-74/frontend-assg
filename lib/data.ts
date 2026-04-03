@@ -2,6 +2,13 @@ import type { Transaction } from './types'
 
 // Generate realistic mock transactions for the past 6 months
 export const generateMockTransactions = (): Transaction[] => {
+  // Use a simple seeded PRNG to ensure server/client consistency for hydration
+  let seed = 42
+  const seededRandom = () => {
+    seed = (seed * 16807) % 2147483647
+    return (seed - 1) / 2147483646
+  }
+
   const transactions: Transaction[] = []
   const categories: Transaction['category'][] = [
     'Salary',
@@ -24,43 +31,43 @@ export const generateMockTransactions = (): Transaction[] => {
   }
 
   let id = 1
-  const today = new Date()
+  const today = new Date('2026-04-03T00:00:00Z') // Use a fixed 'today' for consistency
   const sixMonthsAgo = new Date(today.getTime() - 180 * 24 * 60 * 60 * 1000)
 
-  // Generate approximately 100-120 transactions
+  // Generate 150 transactions
   for (let i = 0; i < 150; i++) {
-    const randomDays = Math.floor(Math.random() * 180)
+    const randomDays = Math.floor(seededRandom() * 180)
     const transactionDate = new Date(sixMonthsAgo.getTime() + randomDays * 24 * 60 * 60 * 1000)
 
     // Add time variation
-    transactionDate.setHours(Math.floor(Math.random() * 24))
-    transactionDate.setMinutes(Math.floor(Math.random() * 60))
+    transactionDate.setHours(Math.floor(seededRandom() * 24))
+    transactionDate.setMinutes(Math.floor(seededRandom() * 60))
 
-    const category = categories[Math.floor(Math.random() * categories.length)]
-    const isIncome = category === 'Salary' ? true : Math.random() > 0.95
-    const merchant = merchants[category][Math.floor(Math.random() * merchants[category].length)]
+    const category = categories[Math.floor(seededRandom() * categories.length)]
+    const isIncome = category === 'Salary' ? true : seededRandom() > 0.95
+    const merchant = merchants[category][Math.floor(seededRandom() * merchants[category].length)]
 
     let amount = 0
     if (category === 'Salary') {
-      amount = 4500 + Math.floor(Math.random() * 2000)
+      amount = 4500 + Math.floor(seededRandom() * 2000)
     } else if (category === 'Utilities') {
-      amount = 50 + Math.floor(Math.random() * 150)
+      amount = 50 + Math.floor(seededRandom() * 150)
     } else if (category === 'Groceries') {
-      amount = 30 + Math.floor(Math.random() * 120)
+      amount = 30 + Math.floor(seededRandom() * 120)
     } else if (category === 'Transport') {
-      amount = 10 + Math.floor(Math.random() * 80)
+      amount = 10 + Math.floor(seededRandom() * 80)
     } else if (category === 'Entertainment') {
-      amount = 20 + Math.floor(Math.random() * 150)
+      amount = 20 + Math.floor(seededRandom() * 150)
     } else if (category === 'Healthcare') {
-      amount = 50 + Math.floor(Math.random() * 300)
+      amount = 50 + Math.floor(seededRandom() * 300)
     } else {
-      amount = 20 + Math.floor(Math.random() * 200)
+      amount = 20 + Math.floor(seededRandom() * 200)
     }
 
     transactions.push({
       id: `TXN${String(id).padStart(6, '0')}`,
       date: transactionDate,
-      amount: parseFloat((amount + Math.random() * 0.99).toFixed(2)),
+      amount: parseFloat((amount + seededRandom() * 0.99).toFixed(2)),
       category,
       type: isIncome ? 'income' : 'expense',
       description: `${category} purchase at ${merchant}`,

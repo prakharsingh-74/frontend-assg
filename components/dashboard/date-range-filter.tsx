@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Calendar } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { cn } from '@/lib/utils'
 
 export function DateRangeFilter() {
   const { dateRange, setDateRange } = useDashboardStore()
@@ -46,71 +47,62 @@ export function DateRangeFilter() {
 
   if (!isMounted) {
     return (
-      <Card className="p-4">
+      <div className="rounded-3xl bg-white p-6 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50">
         <div className="flex items-center gap-2 mb-4">
-          <Calendar className="w-4 h-4 text-muted-foreground" />
-          <h3 className="font-semibold text-foreground">Quick Filters</h3>
+          <Calendar className="w-4 h-4 text-slate-400" />
+          <h3 className="font-bold text-slate-900">Quick Filters</h3>
         </div>
-        <div className="h-10 bg-muted rounded-lg animate-pulse" />
-      </Card>
+        <div className="h-10 bg-slate-50 rounded-xl animate-pulse" />
+      </div>
     )
   }
 
   return (
-    <Card className="p-4">
-      <div className="flex items-center gap-2 mb-4">
-        <Calendar className="w-4 h-4 text-muted-foreground" />
-        <h3 className="font-semibold text-foreground">Quick Filters</h3>
+    <div className="rounded-3xl bg-white p-8 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50">
+      <div className="flex items-center gap-2 mb-6">
+        <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
+            <Calendar className="w-4 h-4" />
+        </div>
+        <div>
+            <h3 className="text-xl font-bold text-slate-900">Time Machine</h3>
+            <p className="text-xs font-medium text-slate-400">Jump to a specific data point</p>
+        </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <Button
-          variant={isLast7Days() ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setLastDays(7)}
-          className="text-xs"
-        >
-          Last 7 Days
-        </Button>
-        <Button
-          variant={isLast30Days() ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setLastDays(30)}
-          className="text-xs"
-        >
-          Last 30 Days
-        </Button>
-        <Button
-          variant={isLast90Days() ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setLastDays(90)}
-          className="text-xs"
-        >
-          Last 90 Days
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => {
-            const to = new Date()
-            const from = new Date(to.getFullYear(), 0, 1)
-            setDateRange(from, to)
-          }}
-          className="text-xs"
-        >
-          This Year
-        </Button>
+      <div className="flex flex-wrap gap-3">
+        {[
+          { label: 'Last 7 Days', days: 7, active: isLast7Days() },
+          { label: 'Last 30 Days', days: 30, active: isLast30Days() },
+          { label: 'Last 90 Days', days: 90, active: isLast90Days() },
+          { label: 'This Year', days: null, active: false }
+        ].map((btn) => (
+          <button
+            key={btn.label}
+            onClick={() => btn.days ? setLastDays(btn.days) : (() => {
+              const to = new Date()
+              const from = new Date(to.getFullYear(), 0, 1)
+              setDateRange(from, to)
+            })()}
+            className={cn(
+              "rounded-xl px-5 py-2.5 text-xs font-bold transition-all tabular-nums ring-1",
+              btn.active 
+                ? "bg-emerald-900 text-white shadow-lg shadow-emerald-900/20 ring-emerald-900" 
+                : "bg-slate-50 text-slate-600 ring-slate-200 hover:bg-white hover:ring-emerald-300"
+            )}
+          >
+            {btn.label}
+          </button>
+        ))}
       </div>
 
       {dateRange.from && typeof dateRange.from === 'object' && 'toLocaleDateString' in dateRange.from && (
-        <div className="mt-4 pt-4 border-t border-border">
-          <div className="text-xs text-muted-foreground">
-            <p>
-              {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
-            </p>
+        <div className="mt-6 pt-6 border-t border-slate-100">
+          <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 uppercase tracking-wider">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Active Range: {dateRange.from.toLocaleDateString()} — {dateRange.to.toLocaleDateString()}
           </div>
         </div>
       )}
-    </Card>
+    </div>
   )
 }

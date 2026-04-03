@@ -2,8 +2,9 @@
 
 import { Card } from '@/components/ui/card'
 import { mockTransactions, formatCurrency } from '@/lib/data'
-import { TrendingDown, AlertCircle, Target } from 'lucide-react'
+import { TrendingDown, AlertCircle, Target, Calendar } from 'lucide-react'
 import { useMemo } from 'react'
+import { cn } from '@/lib/utils'
 
 export function InsightsSection() {
   const insights = useMemo(() => {
@@ -71,100 +72,106 @@ export function InsightsSection() {
       avgTransaction,
       transactionCount,
       countDifference,
+      lastMonthCount,
     }
   }, [])
 
   return (
-    <Card className="p-6">
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-foreground">Financial Insights</h2>
-        <p className="text-sm text-muted-foreground mt-1">This month&apos;s analysis</p>
+    <div className="rounded-3xl bg-white p-8 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold tracking-tight text-slate-900">Financial Insights</h2>
+        <p className="text-sm font-medium text-slate-500">Intelligent analysis of your monthly activity</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Top Spending Category */}
-        <div className="p-4 rounded-lg bg-muted border border-border">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-              <TrendingDown className="w-5 h-5 text-accent" />
+        <div className="p-6 rounded-2xl bg-slate-50 ring-1 ring-slate-100 transition-all hover:bg-white hover:ring-emerald-100 group">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 ring-1 ring-emerald-100 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+              <TrendingDown className="w-6 h-6" />
             </div>
             <div className="flex-1">
-              <p className="text-sm text-muted-foreground mb-1">Top Spending Category</p>
-              <h3 className="text-lg font-semibold text-foreground">{insights.highestCategory}</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                {formatCurrency(insights.highestCategoryAmount)} ({insights.highestCategoryPercent}% of
-                expenses)
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 group-hover:text-emerald-700">Top Spending Category</p>
+              <h3 className="text-lg font-bold text-slate-900">{insights.highestCategory}</h3>
+              <p className="text-xs font-medium text-slate-500 mt-1">
+                {formatCurrency(insights.highestCategoryAmount)} <span className="text-emerald-600 font-bold">({insights.highestCategoryPercent}%)</span> of expenses
               </p>
             </div>
           </div>
         </div>
 
         {/* Monthly Spending Trend */}
-        <div className="p-4 rounded-lg bg-muted border border-border">
-          <div className="flex items-start gap-3">
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${insights.expenseDifference > 0 ? 'bg-red-100 dark:bg-red-900' : 'bg-green-100 dark:bg-green-900'}`}>
-              <TrendingDown
-                className={`w-5 h-5 ${insights.expenseDifference > 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}
-              />
+        <div className="p-6 rounded-2xl bg-slate-50 ring-1 ring-slate-100 transition-all hover:bg-white hover:ring-emerald-100 group">
+          <div className="flex items-start gap-4">
+            <div className={cn(
+                "w-12 h-12 rounded-xl flex items-center justify-center ring-1 transition-colors group-hover:text-white",
+                insights.expenseDifference > 0 
+                  ? "bg-rose-50 text-rose-600 ring-rose-100 group-hover:bg-rose-600" 
+                  : "bg-emerald-50 text-emerald-600 ring-emerald-100 group-hover:bg-emerald-600"
+            )}>
+              <TrendingDown className="w-6 h-6" />
             </div>
             <div className="flex-1">
-              <p className="text-sm text-muted-foreground mb-1">Monthly Spending Change</p>
-              <h3 className="text-lg font-semibold text-foreground">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Monthly Spending Change</p>
+              <h3 className="text-lg font-bold text-slate-900">
                 {insights.expenseDifference > 0 ? '+' : ''}{insights.expenseChangePercent}%
               </h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                vs last month: {formatCurrency(Math.abs(insights.expenseDifference))}
+              <p className="text-xs font-medium text-slate-500 mt-1">
+                vs last month: <span className="font-bold">{formatCurrency(Math.abs(insights.expenseDifference))}</span>
               </p>
             </div>
           </div>
         </div>
 
         {/* Average Transaction */}
-        <div className="p-4 rounded-lg bg-muted border border-border">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Target className="w-5 h-5 text-primary" />
+        <div className="p-6 rounded-2xl bg-slate-50 ring-1 ring-slate-100 transition-all hover:bg-white hover:ring-emerald-100 group">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 ring-1 ring-slate-200 group-hover:bg-emerald-950 group-hover:text-white transition-colors">
+              <Target className="w-6 h-6" />
             </div>
             <div className="flex-1">
-              <p className="text-sm text-muted-foreground mb-1">Average Transaction</p>
-              <h3 className="text-lg font-semibold text-foreground">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Average Transaction</p>
+              <h3 className="text-lg font-bold text-slate-900">
                 {formatCurrency(insights.avgTransaction)}
               </h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                {insights.transactionCount} transactions this month
+              <p className="text-xs font-medium text-slate-500 mt-1">
+                <span className="text-emerald-600 font-bold">{insights.transactionCount}</span> verified transactions
               </p>
             </div>
           </div>
         </div>
 
         {/* Activity Trend */}
-        <div className="p-4 rounded-lg bg-muted border border-border">
-          <div className="flex items-start gap-3">
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${insights.countDifference > 0 ? 'bg-blue-100 dark:bg-blue-900' : 'bg-orange-100 dark:bg-orange-900'}`}>
-              <AlertCircle
-                className={`w-5 h-5 ${insights.countDifference > 0 ? 'text-blue-600 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'}`}
-              />
+        <div className="p-6 rounded-2xl bg-slate-50 ring-1 ring-slate-100 transition-all hover:bg-white hover:ring-emerald-100 group">
+          <div className="flex items-start gap-4">
+            <div className={cn(
+                "w-12 h-12 rounded-xl flex items-center justify-center ring-1 transition-colors group-hover:text-white",
+                insights.countDifference > 0 
+                  ? "bg-sky-50 text-sky-600 ring-sky-100 group-hover:bg-sky-600" 
+                  : "bg-amber-50 text-amber-600 ring-amber-100 group-hover:bg-amber-600"
+            )}>
+              <AlertCircle className="w-6 h-6" />
             </div>
             <div className="flex-1">
-              <p className="text-sm text-muted-foreground mb-1">Activity Comparison</p>
-              <h3 className="text-lg font-semibold text-foreground">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Activity Velocity</p>
+              <h3 className="text-lg font-bold text-slate-900">
                 {insights.countDifference > 0 ? '+' : ''}{insights.countDifference}
               </h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                vs {insights.lastMonthCount} last month
+              <p className="text-xs font-medium text-slate-500 mt-1">
+                transactions vs {insights.lastMonthCount} average
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-6 p-4 rounded-lg bg-accent/5 border border-accent/20">
-        <p className="text-sm text-foreground">
-          <span className="font-semibold">Pro tip:</span> Your top spending category is{' '}
-          <span className="font-semibold text-accent">{insights.highestCategory}</span>. Consider setting
-          a budget limit to optimize your spending.
+      <div className="mt-8 p-6 rounded-2xl bg-emerald-950 text-white shadow-lg shadow-emerald-900/20">
+        <p className="text-sm italic">
+          <span className="font-bold uppercase text-emerald-400 mr-2">Zorvyn Insight:</span>
+          Your top spending category is <span className="font-bold text-emerald-400 underline decoration-emerald-400/30 underline-offset-4">{insights.highestCategory}</span>. 
+          Optimization recommended to maintain your wealth projection.
         </p>
       </div>
-    </Card>
+    </div>
   )
 }
