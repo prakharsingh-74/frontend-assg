@@ -49,12 +49,32 @@ Password: admin123
 - **Hydration**: Robust date rehydration logic to handle complex JSON-to-Date object conversions.
 
 ## 🛠️ Tech Stack
-- **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
 - **State Management**: [Zustand](https://zustand-demo.pmnd.rs/)
 - **Charts**: [Recharts](https://recharts.org/)
 - **Icons**: [Lucide React](https://lucide.dev/)
+
+## UI Screenshots
+<img width="1919" height="1027" alt="image" src="https://github.com/user-attachments/assets/839f51b0-40ff-4318-a119-af1c8a5df112" />
+
+## Login Page
+<img width="1919" height="1032" alt="image" src="https://github.com/user-attachments/assets/dcc88342-99db-4891-bcc8-00979ad917ad" />
+
+## SignUp Page
+<img width="1919" height="1027" alt="image" src="https://github.com/user-attachments/assets/59ea0d1f-6529-4f81-8b53-8968d254c7ea" />
+
+## Dashboard Page (light mode)
+<img width="1919" height="1028" alt="image" src="https://github.com/user-attachments/assets/f5f5edef-27a5-437f-bec8-6a5e65f7bc44" />
+
+## Dashboard Page (dark mode)
+<img width="1919" height="1024" alt="image" src="https://github.com/user-attachments/assets/f0dc2a59-c900-4f20-857e-42a7ee7ddd92" />
+
+## Transactions Page
+<img width="1919" height="1030" alt="image" src="https://github.com/user-attachments/assets/e44eeec4-e5a8-424f-a3c7-9493a87734a1" />
+
+
 
 ## 📦 Getting Started
 
