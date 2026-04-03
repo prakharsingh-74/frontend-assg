@@ -4,6 +4,16 @@ import { Sidebar } from './sidebar'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useDashboardStore } from '@/lib/store'
 import { useState } from 'react'
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { LogOut, User, Settings as SettingsIcon } from 'lucide-react'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -38,9 +48,44 @@ export function DashboardLayout({ children, activeTab, setActiveTab }: Dashboard
             </motion.div>
 
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 uppercase font-black text-emerald-600">
-                {role === 'admin' ? 'AD' : 'VW'}
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all hover:ring-emerald-300 hover:shadow-md active:scale-95 group overflow-hidden">
+                    <Avatar className="h-full w-full rounded-none">
+                      <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${role}`} />
+                      <AvatarFallback className="bg-white font-black text-emerald-600">
+                        {role === 'admin' ? 'AD' : 'VW'}
+                      </AvatarFallback>
+                    </Avatar>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 shadow-2xl border-slate-200/50">
+                  <DropdownMenuLabel className="px-3 py-2">
+                    <p className="text-sm font-black text-emerald-950">Zorvyn User</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{role} Account</p>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-slate-100" />
+                  <DropdownMenuItem className="rounded-xl px-3 py-2.5 gap-2 cursor-pointer transition-colors focus:bg-emerald-50 focus:text-emerald-950 font-bold text-slate-600">
+                    <User className="h-4 w-4 text-emerald-600/50" />
+                    Profile Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => setActiveTab('settings')}
+                    className="rounded-xl px-3 py-2.5 gap-2 cursor-pointer transition-colors focus:bg-emerald-50 focus:text-emerald-950 font-bold text-slate-600"
+                  >
+                    <SettingsIcon className="h-4 w-4 text-emerald-600/50" />
+                    Dashboard Config
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-slate-100" />
+                  <DropdownMenuItem 
+                    onClick={() => window.location.href = '/'}
+                    className="rounded-xl px-3 py-2.5 gap-2 cursor-pointer transition-colors focus:bg-rose-50 focus:text-rose-600 font-bold text-rose-500"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </header>
 

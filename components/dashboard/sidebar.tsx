@@ -102,11 +102,6 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
               </button>
             </div>
           </div>
-
-          <button className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-rose-400 transition-all hover:bg-rose-500/10 active:scale-95">
-            <LogOut className="h-5 w-5" />
-            Sign Out
-          </button>
         </div>
       </div>
     </aside>
