@@ -6,17 +6,43 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, Mail, Lock, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { AuthContainer } from '@/components/auth/auth-container'
+import { useDashboardStore } from '@/lib/store'
 
 export default function LoginPage() {
   const router = useRouter()
+  const { login, isAuthenticated } = useDashboardStore()
   const [isLoading, setIsLoading] = React.useState(false)
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [error, setError] = React.useState<string | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Redirect if already authenticated
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/dashboard')
+    }
+  }, [isAuthenticated, router])
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    setTimeout(() => {
-      router.push('/dashboard')
-    }, 1500)
+    setError(null)
+    
+    try {
+      const success = await login(email, password)
+      if (success) {
+        // Success animation handled by state change or manual delay
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 800)
+      } else {
+        setError('Invalid credentials. Please use admin@zorvyn.com / admin123')
+      }
+    } catch (err) {
+      setError('An error occurred during authentication.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const containerVariants = {
@@ -57,6 +83,19 @@ export default function LoginPage() {
         </motion.div>
 
         <motion.form variants={itemVariants} onSubmit={handleSubmit} className="space-y-5">
+          {error && (
+            <motion.div 
+               initial={{ opacity: 0, height: 0 }}
+               animate={{ opacity: 1, height: 'auto' }}
+               className="bg-rose-50 border border-rose-100 rounded-xl p-3 flex items-center gap-3"
+            >
+              <div className="flex-shrink-0 h-8 w-8 rounded-full bg-rose-100 flex items-center justify-center">
+                <Lock className="h-4 w-4 text-rose-600" />
+              </div>
+              <p className="text-sm font-medium text-rose-700">{error}</p>
+            </motion.div>
+          )}
+
           <div className="space-y-4">
             <div className="space-y-2">
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1" htmlFor="email">
@@ -66,9 +105,11 @@ export default function LoginPage() {
                   <Mail className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
                   <input
                     id="email"
-                    placeholder="e.g. name@company.com"
+                    placeholder="e.g. admin@zorvyn.com"
                     className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-11 py-2 text-sm ring-offset-white transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
               </div>
@@ -78,7 +119,7 @@ export default function LoginPage() {
                 <label className="text-xs font-semibold uppercase tracking-wider text-slate-500" htmlFor="password">
                   Password
                 </label>
-                <a href="#" className="text-xs font-medium text-emerald-600 hover:text-emerald-700">
+                <a href="#" className="text-xs font-medium text-emerald-600 hover:text-emerald-700 font-display">
                   Forgot password?
                 </a>
               </div>
@@ -89,6 +130,8 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     className="flex h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-11 py-2 text-sm ring-offset-white transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
                     type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
               </div>

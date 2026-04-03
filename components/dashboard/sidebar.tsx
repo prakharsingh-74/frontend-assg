@@ -26,7 +26,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
-  const { role, setRole } = useDashboardStore()
+  const { role, setRole, logout } = useDashboardStore()
   const [isExpanded, setIsExpanded] = useState(false)
   const { resolvedTheme, setTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
@@ -190,6 +190,19 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
               </button>
             </div>
           </div>
+
+          {/* Logout */}
+          <button
+            onClick={() => logout()}
+            title="Sign Out"
+            className={cn(
+              "flex items-center rounded-xl py-2 text-[11px] font-bold transition-all text-emerald-300/60 hover:text-white hover:bg-rose-500/20",
+              isExpanded ? "w-full justify-start px-2.5 gap-3" : "w-12 justify-center px-0"
+            )}
+          >
+            <LogOut className="h-3.5 w-3.5 shrink-0" />
+            {isExpanded && <span className="whitespace-nowrap">Sign Out</span>}
+          </button>
         </div>
       </div>
     </motion.aside>

@@ -23,10 +23,14 @@ import {
   RefreshCw,
   Layers,
   ChevronRight,
+  Lock,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import type { Transaction } from '@/lib/types'
+import { usePermissions } from '@/hooks/use-permissions'
+import { PermissionGuard } from '@/components/rbac/permission-guard'
+import { Permission } from '@/lib/rbac'
 
 type SortKey = 'date' | 'amount'
 type SortOrder = 'asc' | 'desc'
@@ -86,7 +90,6 @@ export function TransactionsList() {
   const {
     transactions,
     addTransaction,
-    role,
     searchQuery,
     setSearchQuery,
     selectedCategory,
@@ -99,6 +102,9 @@ export function TransactionsList() {
     amountRange,
     setAmountRange,
   } = useDashboardStore()
+
+  // ── RBAC: use the permissions hook instead of raw role checks ──
+  const { can, role } = usePermissions()
 
   const [sortKey, setSortKey] = useState<SortKey>('date')
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
@@ -303,66 +309,93 @@ export function TransactionsList() {
               </SelectContent>
             </Select>
 
-            {/* Refresh (mock API) */}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => refreshData()}
-              disabled={isLoading}
-              title="Refresh data from API"
-              className="h-10 w-10 rounded-xl border-slate-200 dark:border-slate-600 dark:bg-slate-700/50 dark:text-slate-100"
-            >
-              <RefreshCw className={cn('h-4 w-4', isLoading && 'animate-spin text-emerald-500')} />
-            </Button>
-
-            {/* Export */}
-            <div className="relative">
+            {/* Refresh (mock API) — requires DATA_REFRESH permission */}
+            <PermissionGuard permission={Permission.DATA_REFRESH}>
               <Button
                 variant="outline"
-                onClick={() => setShowExportMenu((v) => !v)}
-                className="h-10 rounded-xl border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-700/50 dark:text-slate-100 gap-2 font-bold px-4"
+                size="icon"
+                onClick={() => refreshData()}
+                disabled={isLoading}
+                title="Refresh data from API"
+                className="h-10 w-10 rounded-xl border-slate-200 dark:border-slate-600 dark:bg-slate-700/50 dark:text-slate-100"
               >
-                <Download className="h-4 w-4" />
-                Export
-                <ChevronDown className="h-3 w-3" />
+                <RefreshCw className={cn('h-4 w-4', isLoading && 'animate-spin text-emerald-500')} />
               </Button>
-              <AnimatePresence>
-                {showExportMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -6, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -6, scale: 0.97 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-12 z-[120] w-40 rounded-2xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-xl p-1.5"
-                    onMouseLeave={() => setShowExportMenu(false)}
-                  >
-                    <button
-                      onClick={() => { exportCSV(filteredTransactions); setShowExportMenu(false) }}
-                      className="w-full text-left rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-                    >
-                      📄 Export CSV
-                    </button>
-                    <button
-                      onClick={() => { exportJSON(filteredTransactions); setShowExportMenu(false) }}
-                      className="w-full text-left rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-                    >
-                      📦 Export JSON
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            </PermissionGuard>
 
-            {/* Add Transaction */}
-            {(role === 'admin' || role === 'user') && (
+            {/* Export — requires TRANSACTIONS_EXPORT permission */}
+            <PermissionGuard
+              permission={Permission.TRANSACTIONS_EXPORT}
+              fallback={
+                <span className="inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-bold text-slate-300 dark:text-[#a6abb4]/50 cursor-not-allowed" title="Export unavailable for your role">
+                  <Lock className="h-3.5 w-3.5" />
+                  Export
+                </span>
+              }
+            >
+              <div className="relative">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowExportMenu((v) => !v)}
+                  className="h-10 rounded-xl border-slate-200 dark:border-slate-600 bg-slate-50/50 dark:bg-slate-700/50 dark:text-slate-100 gap-2 font-bold px-4"
+                >
+                  <Download className="h-4 w-4" />
+                  Export
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+                <AnimatePresence>
+                  {showExportMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-12 z-[120] w-40 rounded-2xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-xl p-1.5"
+                      onMouseLeave={() => setShowExportMenu(false)}
+                    >
+                      <PermissionGuard permission={Permission.DATA_EXPORT_CSV}>
+                        <button
+                          onClick={() => { exportCSV(filteredTransactions); setShowExportMenu(false) }}
+                          className="w-full text-left rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                        >
+                          📄 Export CSV
+                        </button>
+                      </PermissionGuard>
+                      <PermissionGuard permission={Permission.DATA_EXPORT_JSON}>
+                        <button
+                          onClick={() => { exportJSON(filteredTransactions); setShowExportMenu(false) }}
+                          className="w-full text-left rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                        >
+                          📦 Export JSON
+                        </button>
+                      </PermissionGuard>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </PermissionGuard>
+
+            {/* Add Transaction — requires TRANSACTIONS_CREATE permission */}
+            <PermissionGuard
+              permission={Permission.TRANSACTIONS_CREATE}
+              fallback={
+                <span
+                  className="inline-flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-bold text-slate-300 dark:text-[#a6abb4]/40 cursor-not-allowed"
+                  title={`Add Transaction requires 'user' or 'admin' role. Current: '${role}'`}
+                >
+                  <Lock className="h-4 w-4" />
+                  Add Transaction
+                </span>
+              }
+            >
               <Button
                 onClick={() => setIsAddModalOpen(true)}
-                className="h-10 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl gap-2 font-bold px-4"
+                className="h-10 bg-emerald-600 hover:bg-emerald-700 dark:bg-gradient-to-r dark:from-[#60fcc7] dark:to-[#19ce9c] dark:text-[#003d2c] text-white rounded-xl gap-2 font-bold px-4"
               >
                 <Plus className="h-4 w-4" />
                 Add Transaction
               </Button>
-            )}
+            </PermissionGuard>
           </div>
         </div>
 

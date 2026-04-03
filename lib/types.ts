@@ -44,4 +44,10 @@ export interface DashboardStore {
   setGroupBy: (groupBy: 'none' | 'category' | 'month') => void
   amountRange: [number, number]
   setAmountRange: (range: [number, number]) => void
+
+  // ── Authentication ──────────────────────────────────────────────────────
+  isAuthenticated: boolean
+  user: { name: string; email: string; avatar?: string } | null
+  login: (email: string, password: string) => Promise<boolean>
+  logout: () => void
 }
