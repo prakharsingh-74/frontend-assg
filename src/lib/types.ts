@@ -38,6 +38,9 @@ export interface DashboardStore {
   addTransaction: (transaction: Omit<Transaction, 'id'>) => void
   // Mock API
   isLoading: boolean
+  isRefreshing: boolean
+  error: string | null
+  setError: (error: string | null) => void
   refreshData: () => Promise<void>
   // Advanced filtering & grouping
   groupBy: 'none' | 'category' | 'month'
@@ -50,4 +53,6 @@ export interface DashboardStore {
   user: { name: string; email: string; avatar?: string } | null
   login: (email: string, password: string) => Promise<boolean>
   logout: () => void
+  _hasHydrated: boolean
+  setHasHydrated: (state: boolean) => void
 }

@@ -19,27 +19,29 @@ interface AuthGuardProps {
 export function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { isAuthenticated } = useDashboardStore()
+  const { isAuthenticated, _hasHydrated } = useDashboardStore()
   const [isVerifying, setIsVerifying] = useState(true)
 
   useEffect(() => {
-    // Small delay to allow the store to rehydrate from localStorage
+    // Wait for the store to rehydrate from localStorage
+    if (!_hasHydrated) return
+
     const verifyAuth = async () => {
-      // Re-check auth state
       if (!isAuthenticated) {
         console.warn(`[AuthGuard] Access denied to ${pathname}. Redirecting to /login.`)
-        // We use a small delay here to prevent flickering while Zustand rehydrates
+        // Final fallback delay before redirecting
         const timeoutId = setTimeout(() => {
           router.push('/login')
-        }, 1000)
+        }, 500)
         return () => clearTimeout(timeoutId)
       } else {
+        // We have a session!
         setIsVerifying(false)
       }
     }
 
     verifyAuth()
-  }, [isAuthenticated, router, pathname])
+  }, [isAuthenticated, _hasHydrated, router, pathname])
 
   // While checking auth, show a premium Sovereign Analyst loading state
   if (isVerifying) {

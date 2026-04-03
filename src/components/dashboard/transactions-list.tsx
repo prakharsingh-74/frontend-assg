@@ -24,6 +24,7 @@ import {
   Layers,
   ChevronRight,
   Lock,
+  AlertCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -96,6 +97,9 @@ export function TransactionsList() {
     setSelectedCategory,
     dateRange,
     isLoading,
+    isRefreshing,
+    error,
+    setError,
     refreshData,
     groupBy,
     setGroupBy,
@@ -120,12 +124,16 @@ export function TransactionsList() {
     category: 'Other' as Transaction['category'],
     type: 'expense' as 'income' | 'expense',
   })
+  const [formError, setFormError] = useState<string | null>(null)
 
   const itemsPerPage = 8
 
   /* ─── Filtered + sorted list ─────────────────────────────── */
   const filteredTransactions = useMemo(() => {
     let filtered = transactions.filter((tx) => {
+      // Safety check for date rehydration issues
+      if (!(tx.date instanceof Date)) return false
+      
       if (tx.date < dateRange.from || tx.date > dateRange.to) return false
       if (selectedCategory && tx.category !== selectedCategory) return false
       if (tx.amount < amountRange[0] || tx.amount > amountRange[1]) return false
@@ -184,14 +192,31 @@ export function TransactionsList() {
 
   const handleAddTransaction = (e: React.FormEvent) => {
     e.preventDefault()
+    setFormError(null)
+
+    const merchant = newTx.merchant.trim()
+    const amount = parseFloat(newTx.amount)
+
+    // Robust Validation
+    if (!merchant) {
+      setFormError('Merchant name is required.')
+      return
+    }
+    if (isNaN(amount) || amount <= 0) {
+      setFormError('Please enter a valid amount greater than 0.')
+      return
+    }
+
     addTransaction({
       ...newTx,
-      amount: parseFloat(newTx.amount),
+      merchant,
+      amount,
       date: new Date(),
-      description: `${newTx.category} at ${newTx.merchant}`,
+      description: `${newTx.category} at ${merchant}`,
     })
     setIsAddModalOpen(false)
     setNewTx({ merchant: '', amount: '', category: 'Other', type: 'expense' })
+    setFormError(null)
   }
 
   /* ─── Row renderer ──────────────────────────────────────── */
@@ -257,7 +282,32 @@ export function TransactionsList() {
 
   /* ─── Render ─────────────────────────────────────────────── */
   return (
-    <div className="rounded-3xl bg-white dark:bg-slate-800 p-8 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 ring-1 ring-slate-200/50 dark:ring-slate-700/50 font-sans relative">
+    <div className="rounded-3xl bg-white dark:bg-slate-800 p-8 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 ring-1 ring-slate-200/50 dark:ring-slate-700/50 font-sans relative overflow-hidden">
+      
+      {/* Error Banner */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="bg-rose-50 dark:bg-rose-950/20 border-b border-rose-100 dark:border-rose-500/10 px-8 py-3 -mx-8 -mt-8 mb-8 flex items-center justify-between group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-8 rounded-full bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center">
+                <Lock className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+              </div>
+              <p className="text-sm font-bold text-rose-700 dark:text-rose-300">{error}</p>
+            </div>
+            <button
+               onClick={() => setError(null)}
+               className="p-2 hover:bg-rose-100 dark:hover:bg-rose-900/30 rounded-xl transition-colors"
+            >
+              <X className="h-4 w-4 text-rose-400" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Header */}
       <div className="mb-6 flex flex-col gap-4">
@@ -593,6 +643,21 @@ export function TransactionsList() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {/* Validation Error Display */}
+                <AnimatePresence>
+                  {formError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl bg-rose-50 dark:bg-rose-950/20 text-[11px] font-bold text-rose-600 dark:text-rose-400 ring-1 ring-rose-100 dark:ring-rose-500/10"
+                    >
+                      <AlertCircle className="h-3.5 w-3.5" />
+                      {formError}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <Button type="submit" className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-lg shadow-emerald-600/20 mt-4">
                   Confirm Transaction
