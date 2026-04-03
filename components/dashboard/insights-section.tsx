@@ -1,26 +1,30 @@
 'use client'
 
 import { Card } from '@/components/ui/card'
-import { mockTransactions, formatCurrency } from '@/lib/data'
-import { TrendingDown, AlertCircle, Target, Calendar } from 'lucide-react'
+import { useDashboardStore } from '@/lib/store'
+import { formatCurrency } from '@/lib/data'
+import { TrendingDown, AlertCircle, Target, Calendar, Search } from 'lucide-react'
 import { useMemo } from 'react'
 import { cn } from '@/lib/utils'
 
 export function InsightsSection() {
+  const { transactions } = useDashboardStore()
+  
   const insights = useMemo(() => {
+    if (!transactions.length) return null
+
     const now = new Date()
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1)
     const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
     const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1)
 
     // This month transactions
-    const thisMonthTransactions = mockTransactions.filter(
+    const thisMonthTransactions = transactions.filter(
       (tx) => tx.date >= thisMonth && tx.date < nextMonthStart
     )
 
     // Last month transactions
-    const lastMonthEnd = new Date(lastMonth.getFullYear(), lastMonth.getMonth() + 1, 0)
-    const lastMonthTransactions = mockTransactions.filter(
+    const lastMonthTransactions = transactions.filter(
       (tx) => tx.date >= lastMonth && tx.date < thisMonth
     )
 
@@ -35,7 +39,7 @@ export function InsightsSection() {
 
     const expenseDifference = thisMonthExpenses - lastMonthExpenses
     const expenseChangePercent =
-      lastMonthExpenses > 0 ? ((expenseDifference / lastMonthExpenses) * 100).toFixed(1) : 0
+      lastMonthExpenses > 0 ? ((expenseDifference / lastMonthExpenses) * 100).toFixed(1) : (thisMonthExpenses > 0 ? "100" : "0")
 
     // Highest category
     const categoryTotals: Record<string, number> = {}
@@ -74,7 +78,21 @@ export function InsightsSection() {
       countDifference,
       lastMonthCount,
     }
-  }, [])
+  }, [transactions])
+
+  if (!insights) {
+    return (
+      <div className="rounded-3xl bg-white p-8 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50 min-h-[400px] flex flex-col items-center justify-center text-center">
+        <div className="mb-4 rounded-full bg-slate-50 p-6 ring-1 ring-slate-100">
+          <Search className="h-8 w-8 text-slate-300" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900">No signals detected</h2>
+        <p className="mt-2 text-sm text-slate-500 max-w-[280px]">
+          We couldn't generate any financial insights based on your current transaction history. 
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="rounded-3xl bg-white p-8 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/50">

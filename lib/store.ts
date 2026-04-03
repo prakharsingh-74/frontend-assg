@@ -10,17 +10,28 @@ const getDefaultDateRange = () => ({
 })
 
 const convertDatesToDateObjects = (state: any) => {
-  if (state && state.dateRange) {
-    return {
-      ...state,
-      dateRange: {
-        from: new Date(state.dateRange.from),
-        to: new Date(state.dateRange.to),
-      },
+  if (!state) return state
+  
+  const newState = { ...state }
+  
+  if (newState.dateRange) {
+    newState.dateRange = {
+      from: new Date(newState.dateRange.from),
+      to: new Date(newState.dateRange.to),
     }
   }
-  return state
+
+  if (newState.transactions) {
+    newState.transactions = newState.transactions.map((tx: any) => ({
+      ...tx,
+      date: new Date(tx.date)
+    }))
+  }
+
+  return newState
 }
+
+import { mockTransactions } from './data'
 
 export const useDashboardStore = create<DashboardStore>()(
   persist(
@@ -36,6 +47,15 @@ export const useDashboardStore = create<DashboardStore>()(
 
       dateRange: getDefaultDateRange(),
       setDateRange: (from: Date, to: Date) => set({ dateRange: { from, to } }),
+
+      transactions: mockTransactions,
+      addTransaction: (transaction) => set((state) => {
+        const newTransaction = {
+          ...transaction,
+          id: `TXN${Math.random().toString(36).substr(2, 6).toUpperCase()}`
+        }
+        return { transactions: [newTransaction, ...state.transactions] }
+      }),
     }),
     {
       name: 'dashboard-store',
@@ -46,11 +66,16 @@ export const useDashboardStore = create<DashboardStore>()(
           from: state.dateRange.from instanceof Date ? state.dateRange.from.toISOString() : state.dateRange.from,
           to: state.dateRange.to instanceof Date ? state.dateRange.to.toISOString() : state.dateRange.to,
         },
+        transactions: state.transactions.map(tx => ({
+          ...tx,
+          date: tx.date instanceof Date ? tx.date.toISOString() : tx.date
+        })),
       }),
       onRehydrateStorage: () => (state) => {
         if (state) {
           const converted = convertDatesToDateObjects(state);
           state.dateRange = converted.dateRange;
+          state.transactions = converted.transactions;
         }
       },
     }

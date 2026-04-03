@@ -1,11 +1,12 @@
 'use client'
 
 import { SummaryCard } from './summary-card'
-import { mockTransactions } from '@/lib/data'
+import { useDashboardStore } from '@/lib/store'
 import { useMemo, useEffect, useState } from 'react'
 import { DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
 
 export function DashboardOverview() {
+  const { transactions } = useDashboardStore()
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export function DashboardOverview() {
     let incomeThisMonth = 0
     let expensesThisMonth = 0
 
-    mockTransactions.forEach((tx) => {
+    transactions.forEach((tx) => {
       const amount = tx.amount
       if (tx.type === 'income') {
         income += amount
@@ -56,7 +57,7 @@ export function DashboardOverview() {
     const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
-    return mockTransactions
+    return transactions
       .filter((tx) => tx.type === 'income' && tx.date >= lastMonth && tx.date < thisMonth)
       .reduce((sum, tx) => sum + tx.amount, 0)
   }, [])
@@ -66,7 +67,7 @@ export function DashboardOverview() {
     const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
-    return mockTransactions
+    return transactions
       .filter((tx) => tx.type === 'expense' && tx.date >= lastMonth && tx.date < thisMonth)
       .reduce((sum, tx) => sum + tx.amount, 0)
   }, [])

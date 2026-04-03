@@ -34,4 +34,6 @@ export interface DashboardStore {
   setSelectedCategory: (category: string | null) => void
   dateRange: { from: Date; to: Date }
   setDateRange: (from: Date, to: Date) => void
+  transactions: Transaction[]
+  addTransaction: (transaction: Omit<Transaction, 'id'>) => void
 }
