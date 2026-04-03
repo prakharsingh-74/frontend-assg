@@ -56,6 +56,21 @@ export const useDashboardStore = create<DashboardStore>()(
         }
         return { transactions: [newTransaction, ...state.transactions] }
       }),
+
+      // Mock API
+      isLoading: false,
+      refreshData: async () => {
+        set({ isLoading: true })
+        await new Promise((res) => setTimeout(res, 1200))
+        const { mockTransactions: fresh } = await import('./data')
+        set({ transactions: fresh, isLoading: false })
+      },
+
+      // Advanced filtering
+      groupBy: 'none' as 'none' | 'category' | 'month',
+      setGroupBy: (groupBy: 'none' | 'category' | 'month') => set({ groupBy }),
+      amountRange: [0, 10000] as [number, number],
+      setAmountRange: (range: [number, number]) => set({ amountRange: range }),
     }),
     {
       name: 'dashboard-store',

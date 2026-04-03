@@ -66,4 +66,3 @@ This project was built to demonstrate an understanding of modern frontend develo
 - **Visual Polish**: Uses a premium Emerald-based color palette with glassmorphism effects and smooth transitions.
 
 ---
-*Built as a frontend engineering assessment.*

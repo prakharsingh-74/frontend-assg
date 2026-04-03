@@ -1,4 +1,4 @@
-export type UserRole = 'viewer' | 'admin'
+export type UserRole = 'viewer' | 'user' | 'admin'
 
 export interface Transaction {
   id: string
@@ -36,4 +36,12 @@ export interface DashboardStore {
   setDateRange: (from: Date, to: Date) => void
   transactions: Transaction[]
   addTransaction: (transaction: Omit<Transaction, 'id'>) => void
+  // Mock API
+  isLoading: boolean
+  refreshData: () => Promise<void>
+  // Advanced filtering & grouping
+  groupBy: 'none' | 'category' | 'month'
+  setGroupBy: (groupBy: 'none' | 'category' | 'month') => void
+  amountRange: [number, number]
+  setAmountRange: (range: [number, number]) => void
 }

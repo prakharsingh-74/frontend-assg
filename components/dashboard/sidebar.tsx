@@ -10,11 +10,15 @@ import {
   Shield, 
   Eye,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  CircleUser,
+  Sun,
+  Moon,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useTheme } from 'next-themes'
 
 interface SidebarProps {
   activeTab: string
@@ -24,6 +28,8 @@ interface SidebarProps {
 export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
   const { role, setRole } = useDashboardStore()
   const [isExpanded, setIsExpanded] = useState(false)
+  const { resolvedTheme, setTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
 
   const navItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -105,8 +111,22 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
           })}
         </nav>
 
-        {/* Bottom Section: Role Switcher & User */}
+        {/* Bottom Section: Theme Toggle + Role Switcher */}
         <div className={cn("mt-auto space-y-4 pt-6 border-t border-emerald-900/50 overflow-hidden", isExpanded ? "w-full" : "w-12")}>
+          {/* Dark mode toggle */}
+          <button
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            className={cn(
+              "flex items-center rounded-xl py-2 text-[11px] font-bold transition-all text-emerald-300/60 hover:text-emerald-100 hover:bg-emerald-900/40",
+              isExpanded ? "w-full justify-between px-2.5" : "w-12 justify-center px-0"
+            )}
+          >
+            <div className="flex items-center gap-3">
+              {isDark ? <Sun className="h-3.5 w-3.5 shrink-0" /> : <Moon className="h-3.5 w-3.5 shrink-0" />}
+              {isExpanded && <span className="whitespace-nowrap">{isDark ? 'Light Mode' : 'Dark Mode'}</span>}
+            </div>
+          </button>
           <div className={cn(
             "rounded-2xl transition-all ring-1",
             isExpanded ? "bg-emerald-900/30 ring-emerald-800/50 p-3" : "bg-transparent ring-transparent p-0"
@@ -120,33 +140,50 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
                     System Access
                 </motion.p>
             )}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               <button
                 onClick={() => setRole('viewer')}
                 title="Viewer Mode"
                 className={cn(
-                  "flex items-center rounded-xl py-2 text-xs font-bold transition-all",
+                  "flex items-center rounded-xl py-2 text-[11px] font-bold transition-all",
                   isExpanded ? "justify-between px-2.5" : "justify-center px-0 w-12",
-                  role === 'viewer' ? "bg-white text-emerald-950 shadow-sm" : "text-emerald-300/60 hover:text-emerald-100"
+                  role === 'viewer' ? "bg-white text-emerald-950 shadow-sm" : "text-emerald-300/50 hover:text-emerald-100 hover:bg-emerald-900/40"
                 )}
               >
                 <div className="flex items-center gap-3">
-                  <Eye className="h-4 w-4 shrink-0" />
+                  <Eye className="h-3.5 w-3.5 shrink-0" />
                   {isExpanded && <span className="whitespace-nowrap">Viewer</span>}
                 </div>
                 {role === 'viewer' && isExpanded && <div className="h-1.5 w-1.5 rounded-full bg-emerald-600" />}
               </button>
+              
+              <button
+                onClick={() => setRole('user')}
+                title="User Mode"
+                className={cn(
+                  "flex items-center rounded-xl py-2 text-[11px] font-bold transition-all",
+                  isExpanded ? "justify-between px-2.5" : "justify-center px-0 w-12",
+                  role === 'user' ? "bg-white text-emerald-950 shadow-sm" : "text-emerald-300/50 hover:text-emerald-100 hover:bg-emerald-900/40"
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <CircleUser className="h-3.5 w-3.5 shrink-0" />
+                  {isExpanded && <span className="whitespace-nowrap">User</span>}
+                </div>
+                {role === 'user' && isExpanded && <div className="h-1.5 w-1.5 rounded-full bg-emerald-600" />}
+              </button>
+
               <button
                 onClick={() => setRole('admin')}
                 title="Admin Mode"
                 className={cn(
-                  "flex items-center rounded-xl py-2 text-xs font-bold transition-all",
+                  "flex items-center rounded-xl py-2 text-[11px] font-bold transition-all",
                   isExpanded ? "justify-between px-2.5" : "justify-center px-0 w-12",
-                  role === 'admin' ? "bg-white text-emerald-950 shadow-sm" : "text-emerald-300/60 hover:text-emerald-100"
+                  role === 'admin' ? "bg-white text-emerald-950 shadow-sm" : "text-emerald-300/50 hover:text-emerald-100 hover:bg-emerald-900/40"
                 )}
               >
                 <div className="flex items-center gap-3">
-                  <Shield className="h-4 w-4 shrink-0" />
+                  <Shield className="h-3.5 w-3.5 shrink-0" />
                   {isExpanded && <span className="whitespace-nowrap">Admin</span>}
                 </div>
                 {role === 'admin' && isExpanded && <div className="h-1.5 w-1.5 rounded-full bg-emerald-600" />}
