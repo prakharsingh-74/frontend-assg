@@ -1,7 +1,8 @@
 'use client'
 
-import { ShieldCheck, ArrowUpRight } from 'lucide-react'
+import { ShieldCheck, ArrowUpRight, Menu, X } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 
 const Stat = ({ label, value }: { label: string; value: string }) => (
   <div className="space-y-1">
@@ -122,6 +123,8 @@ function Planet() {
 }
 
 export function ZorvynLandingPage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
   return (
     <>
       <style>{`
@@ -161,7 +164,38 @@ export function ZorvynLandingPage() {
           </Link>
           <SoftButton href="/signup">Sign Up</SoftButton>
         </div>
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-slate-600 hover:text-slate-900 focus:outline-none"
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-white shadow-lg mx-4 rounded-xl mb-6 overflow-hidden">
+          <div className="flex flex-col space-y-4 p-4">
+            {['Solutions', 'Product', 'Company', 'Insight'].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="text-sm text-slate-600 hover:text-slate-900 font-medium"
+              >
+                {item}
+              </a>
+            ))}
+            <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
+              <Link href="/login" className="text-center rounded-full px-4 py-2 text-sm text-slate-700 bg-slate-50 hover:bg-slate-100">
+                Login
+              </Link>
+              <SoftButton href="/signup" className="w-full">Sign Up</SoftButton>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero area */}
       <div className="mx-auto grid w-full max-w-[1180px] grid-cols-1 gap-6 px-4 pb-14 md:grid-cols-2 md:px-0">

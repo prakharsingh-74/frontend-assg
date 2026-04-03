@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LogOut, User, Settings as SettingsIcon } from 'lucide-react'
+import { LogOut, User, Settings as SettingsIcon, Menu, X } from 'lucide-react'
 
 interface DashboardLayoutProps {
   children: React.ReactNode
@@ -23,29 +23,58 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children, activeTab, setActiveTab }: DashboardLayoutProps) {
   const { role } = useDashboardStore()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
     <div className="flex min-h-screen bg-[#F3F5F7] dark:bg-[#090f15] transition-colors duration-300">
-      {/* Sidebar Navigation */}
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm md:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Sidebar */}
+      <Sidebar className="hidden md:flex" activeTab={activeTab} setActiveTab={setActiveTab} />
+      
+      {/* Mobile Sidebar */}
+      <Sidebar 
+        className={`md:hidden transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`} 
+        activeTab={activeTab} 
+        setActiveTab={(tab) => { setActiveTab(tab); setIsMobileMenuOpen(false); }} 
+      />
 
       {/* Main Content Area */}
-      <main className="ml-20 flex-1 transition-all">
-        <div className="mx-auto max-w-7xl p-8">
-          <header className="mb-10 flex items-center justify-between">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              key={activeTab}
-            >
-              <h1 className="font-display text-4xl font-extrabold tracking-tight text-emerald-950 dark:text-[#e6ebf4] capitalize">{activeTab}</h1>
-              <p className="mt-1 text-sm font-medium text-slate-400 dark:text-[#a6abb4]">
-                {activeTab === 'overview' && 'Your financial health at a glance'}
-                {activeTab === 'transactions' && 'Manage your spending history'}
-                {activeTab === 'insights' && 'Deep dive into your financial patterns'}
-                {activeTab === 'settings' && 'System configuration and access control'}
-              </p>
-            </motion.div>
+      <main className="flex-1 transition-all md:ml-20">
+        <div className="mx-auto max-w-7xl p-4 md:p-8">
+          <header className="mb-6 md:mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="md:hidden flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-[#182028] shadow-sm ring-1 ring-slate-200 dark:ring-0 text-emerald-950 dark:text-[#e6ebf4]"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                key={activeTab}
+              >
+                <h1 className="font-display text-4xl font-extrabold tracking-tight text-emerald-950 dark:text-[#e6ebf4] capitalize">{activeTab}</h1>
+                <p className="mt-1 text-sm font-medium text-slate-400 dark:text-[#a6abb4] hidden sm:block">
+                  {activeTab === 'overview' && 'Your financial health at a glance'}
+                  {activeTab === 'transactions' && 'Manage your spending history'}
+                  {activeTab === 'insights' && 'Deep dive into your financial patterns'}
+                  {activeTab === 'settings' && 'System configuration and access control'}
+                </p>
+              </motion.div>
+            </div>
 
             <div className="flex items-center gap-4">
               <DropdownMenu>

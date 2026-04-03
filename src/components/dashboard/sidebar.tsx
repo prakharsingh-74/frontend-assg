@@ -23,9 +23,10 @@ import { useTheme } from 'next-themes'
 interface SidebarProps {
   activeTab: string
   setActiveTab: (tab: any) => void
+  className?: string
 }
 
-export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
+export function Sidebar({ activeTab, setActiveTab, className = '' }: SidebarProps) {
   const { role, setRole, logout } = useDashboardStore()
   const [isExpanded, setIsExpanded] = useState(false)
   const { resolvedTheme, setTheme } = useTheme()
@@ -45,7 +46,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="fixed left-0 top-0 z-50 h-screen bg-emerald-950 dark:bg-black text-white shadow-2xl overflow-hidden"
+      className={`fixed left-0 top-0 z-50 h-screen bg-emerald-950 dark:bg-black text-white shadow-2xl overflow-hidden ${className}`}
     >
       <div className={cn("flex h-full w-full flex-col transition-all duration-300", isExpanded ? "p-4 md:p-6 items-start" : "p-0 py-8 items-center")}>
         {/* Logo */}
