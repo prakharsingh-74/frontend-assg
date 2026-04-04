@@ -138,6 +138,9 @@ export const useDashboardStore = create<DashboardStore>()(
         return false
       },
       logout: () => {
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('token')
+        }
         set({
           isAuthenticated: false,
           user: null,

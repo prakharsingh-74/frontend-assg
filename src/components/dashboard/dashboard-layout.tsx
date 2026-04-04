@@ -22,7 +22,7 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children, activeTab, setActiveTab }: DashboardLayoutProps) {
-  const { role } = useDashboardStore()
+  const { role, logout } = useDashboardStore()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
@@ -103,7 +103,10 @@ export function DashboardLayout({ children, activeTab, setActiveTab }: Dashboard
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-slate-100" />
                   <DropdownMenuItem 
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => {
+                      logout();
+                      window.location.href = '/';
+                    }}
                     className="rounded-xl px-3 py-2.5 gap-2 cursor-pointer transition-colors focus:bg-rose-50 focus:text-rose-600 font-bold text-rose-500"
                   >
                     <LogOut className="h-4 w-4" />

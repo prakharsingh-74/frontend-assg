@@ -194,7 +194,10 @@ export function Sidebar({ activeTab, setActiveTab, className = '' }: SidebarProp
 
           {/* Logout */}
           <button
-            onClick={() => logout()}
+            onClick={() => {
+              logout();
+              window.location.href = '/';
+            }}
             title="Sign Out"
             className={cn(
               "flex items-center rounded-xl py-2 text-[11px] font-bold transition-all text-emerald-300/60 hover:text-white hover:bg-rose-500/20",
